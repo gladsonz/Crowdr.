@@ -58,9 +58,9 @@ Our algorithm uses collaborative filtering and user preference models to suggest
 ---
 
 ## 📸 UI Preview
-
-> *(Add UI mockups here once available)*
-
+```bash
+https://www.figma.com/design/F2FBZ6h0XmSkxd8F5DoU2S/Untitled?node-id=0-1&t=WbbSN3cXn83mwNbR-1
+```
 ---
 
 ## 📦 Installation
