@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../Data/eventformat.dart';
+import 'package:proj1/Data/eventformat.dart';
 
 class EventDetailsScreen extends StatefulWidget {
   final Event event;
@@ -14,6 +14,7 @@ class EventDetailsScreen extends StatefulWidget {
 class _EventDetailsScreenState extends State<EventDetailsScreen> {
   late bool isBooked;
   late bool isBucketListed;
+  double _userRating = 0.0;
 
   @override
   void initState() {
@@ -26,8 +27,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     setState(() {
       isBooked = !isBooked;
     });
-    // In a real app, you would also handle the booking logic here
-    // e.g., make an API call to book the ticket.
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -55,10 +54,33 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     );
   }
 
+  void _rateEvent(double newRating) {
+    setState(() {
+      _userRating = newRating;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('You rated this event $_userRating stars!'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.event.title)),
+      appBar: AppBar(
+        title: Text(widget.event.title),
+        actions: [
+          IconButton(
+            icon: Icon(
+              isBucketListed ? Icons.bookmark : Icons.bookmark_border,
+              color: isBucketListed ? Colors.yellow : null,
+            ),
+            onPressed: _toggleBucketList,
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,6 +172,37 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       fontStyle: FontStyle.italic,
                     ),
                   ),
+                  const Divider(height: 32),
+                  Text(
+                    'Rate this Event',
+                    style: GoogleFonts.leagueSpartan(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: List.generate(5, (index) {
+                      return IconButton(
+                        icon: Icon(
+                          index < _userRating ? Icons.star : Icons.star_border,
+                          color: Colors.amber,
+                        ),
+                        onPressed: () => _rateEvent(index + 1.0),
+                      );
+                    }),
+                  ),
+                  if (_userRating > 0)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        'Your Rating: $_userRating / 5',
+                        style: GoogleFonts.leagueSpartan(
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

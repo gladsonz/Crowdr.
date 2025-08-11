@@ -15,6 +15,7 @@ class RestaurantDetailsScreen extends StatefulWidget {
 class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
   late bool isTableBooked;
   late bool isBucketListed;
+  double _userRating = 0.0; // Added state for user rating
 
   @override
   void initState() {
@@ -50,6 +51,18 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
               ? 'Added to bucket list!'
               : 'Removed from bucket list.',
         ),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _rateRestaurant(double newRating) {
+    setState(() {
+      _userRating = newRating;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('You rated this restaurant $_userRating stars!'),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -132,6 +145,37 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                       ),
                     ),
                   ],
+                  const Divider(height: 32),
+                  Text(
+                    'Rate this Restaurant',
+                    style: GoogleFonts.leagueSpartan(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: List.generate(5, (index) {
+                      return IconButton(
+                        icon: Icon(
+                          index < _userRating ? Icons.star : Icons.star_border,
+                          color: Colors.amber,
+                        ),
+                        onPressed: () => _rateRestaurant(index + 1.0),
+                      );
+                    }),
+                  ),
+                  if (_userRating > 0)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        'Your Rating: $_userRating / 5',
+                        style: GoogleFonts.leagueSpartan(
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

@@ -12,7 +12,9 @@ class EventsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      scrollDirection: Axis.horizontal,
+      // This is the fix to prevent layout overflow
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: events.length,
       itemBuilder: (context, index) {
         final event = events[index];

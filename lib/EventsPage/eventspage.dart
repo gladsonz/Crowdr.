@@ -3,24 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:proj1/Data/eventformat.dart';
 import 'package:proj1/EventsPage/maincard.dart';
-import 'package:proj1/EventsPage/listviewbuilderall.dart';
+import 'package:proj1/EventsPage/evenstlistviewbulder.dart';
 import 'package:proj1/EventsPage/eventdescripton.dart';
-import 'package:proj1/Data/artistchefgenrecardandlistviewbuilder.dart';
-
+import 'package:proj1/Data/artistgenreformat.dart';
+import 'package:proj1/EventsPage/artistgenrebuilder.dart';
+import 'package:proj1/EventsPage/organizeevnt.dart';
 // Placeholder for the organize events page
-class OrganizeEventsPage extends StatelessWidget {
-  const OrganizeEventsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Organize an Event')),
-      body: const Center(
-        child: Text('This is the page to organize a new event.'),
-      ),
-    );
-  }
-}
 
 class EventsPage extends StatefulWidget {
   const EventsPage({super.key});
@@ -30,16 +18,17 @@ class EventsPage extends StatefulWidget {
 }
 
 class _EventsPageState extends State<EventsPage> {
-  String _filterLocation = '';
+  String _eventsNearMeFilter = '';
 
   @override
   Widget build(BuildContext context) {
-    final filteredEvents = allEvents.where((event) {
-      if (_filterLocation.isEmpty) {
+    // Filtered events for the "Events Near Me" section
+    final eventsNearMe = allEvents.where((event) {
+      if (_eventsNearMeFilter.isEmpty) {
         return true;
       }
       return event.location.toLowerCase().contains(
-        _filterLocation.toLowerCase(),
+        _eventsNearMeFilter.toLowerCase(),
       );
     }).toList();
 
@@ -50,30 +39,96 @@ class _EventsPageState extends State<EventsPage> {
           style: GoogleFonts.leagueSpartan(fontWeight: FontWeight.bold),
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.location_on),
-                hintText: 'Search events near you...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide.none,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Recommended Events',
+                style: GoogleFonts.leagueSpartan(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
                 ),
-                filled: true,
-                fillColor: Theme.of(context).cardColor,
               ),
-              onChanged: (value) {
-                setState(() {
-                  _filterLocation = value;
-                });
-              },
             ),
-          ),
-          Expanded(child: EventsList(events: filteredEvents)),
-        ],
+            // Reusing EventsList for Recommended Events
+            EventsList(events: allEvents),
+            const SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Genres',
+                    style: GoogleFonts.leagueSpartan(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  GenreGridViewBuilder(genres: allGenres),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Trending Events',
+                    style: GoogleFonts.leagueSpartan(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Reusing EventsList for Trending Events
+                  EventsList(
+                    events: allEvents,
+                  ), // Assuming trending events are a subset of allEvents
+                  const SizedBox(height: 24),
+                  Text(
+                    'Artists',
+                    style: GoogleFonts.leagueSpartan(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ArtistListViewBuilder(artists: allArtists),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Events Near Me',
+                    style: GoogleFonts.leagueSpartan(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.location_on),
+                        hintText: 'Search events near you...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Theme.of(context).cardColor,
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _eventsNearMeFilter = value;
+                        });
+                      },
+                    ),
+                  ),
+                  // Reusing EventsList for filtered events
+                  EventsList(events: eventsNearMe),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16.0),

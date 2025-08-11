@@ -4,21 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:proj1/Data/dineindatafromat.dart';
 import 'dinecard.dart';
 import 'dinelistviewbuilder.dart';
+import 'package:proj1/Data/chefchainsformat.dart';
+import 'package:proj1/DinePage/chefchainbuilder.dart';
+import 'package:proj1/DinePage/dinelistviewbuilder.dart';
 
-// Placeholder for the organize restaurants page
-class OrganizeRestaurantPage extends StatelessWidget {
-  const OrganizeRestaurantPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Add a Restaurant')),
-      body: const Center(
-        child: Text('This is the page for restaurant owners.'),
-      ),
-    );
-  }
-}
+import 'package:proj1/DinePage/addrestarent.dart';
 
 class DinePage extends StatefulWidget {
   const DinePage({super.key});
@@ -51,32 +41,122 @@ class _DinePageState extends State<DinePage> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.location_on),
-                hintText: 'Search restaurants near you...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Theme.of(context).cardColor,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Trending Restaurants
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
               ),
-              onChanged: (value) {
-                setState(() {
-                  _filterLocation = value;
-                });
-              },
+              child: Text(
+                'Trending Restaurants',
+                style: GoogleFonts.leagueSpartan(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
             ),
-          ),
-          Expanded(
-            child: DineListViewBuilder(restaurants: filteredRestaurants),
-          ),
-        ],
+            SizedBox(
+              height: 250,
+              child: DineListViewBuilder(
+                restaurants: allRestaurants,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+              ),
+            ),
+            const SizedBox(height: 24),
+            // Top Chefs
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
+              child: Text(
+                'Top Chefs',
+                style: GoogleFonts.leagueSpartan(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              height: 170,
+              child: ChefListViewBuilder(
+                chefs: allChefs,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+              ),
+            ),
+            const SizedBox(height: 24),
+            // Popular Food Chains
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
+              child: Text(
+                'Popular Food Chains',
+                style: GoogleFonts.leagueSpartan(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              height: 150,
+              child: FoodChainGridViewBuilder(
+                foodChains: allFoodChains,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+              ),
+            ),
+            const SizedBox(height: 24),
+            // Recommended Restaurants
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
+              child: Text(
+                'Recommended Restaurants',
+                style: GoogleFonts.leagueSpartan(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            DineListViewBuilder(
+              restaurants: allRestaurants,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+            ),
+            const SizedBox(height: 24),
+            // Hidden Gems
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
+              child: Text(
+                'Hidden Gems',
+                style: GoogleFonts.leagueSpartan(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            DineListViewBuilder(
+              restaurants: allRestaurants.reversed.toList(),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16.0),

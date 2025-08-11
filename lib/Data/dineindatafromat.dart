@@ -11,6 +11,8 @@ class Restaurant {
   final String offer;
   final bool bucketlist;
   final String address;
+  final int averageCost;
+  final double userRating;
 
   const Restaurant({
     required this.imageUrl,
@@ -22,6 +24,8 @@ class Restaurant {
     required this.offer,
     required this.bucketlist,
     required this.address,
+    required this.averageCost,
+    required this.userRating,
   });
 }
 
@@ -40,6 +44,8 @@ final List<Restaurant> allRestaurants = const [
         'Enjoy a complimentary glass of champagne with every booking before 7 PM.',
     bucketlist: false,
     address: '450 Park Avenue, New York, NY 10022',
+    averageCost: 150,
+    userRating: 0.0,
   ),
   Restaurant(
     imageUrl:
@@ -53,6 +59,8 @@ final List<Restaurant> allRestaurants = const [
     offer: 'Weekend special: Get 15% off the tasting menu for two.',
     bucketlist: true,
     address: '100 Broadway, New York, NY 10005',
+    averageCost: 200,
+    userRating: 0.0,
   ),
   Restaurant(
     imageUrl:
@@ -66,5 +74,7 @@ final List<Restaurant> allRestaurants = const [
     offer: 'N/A',
     bucketlist: false,
     address: '88 E 42nd St, New York, NY 10017',
+    averageCost: 120,
+    userRating: 0.0,
   ),
 ];

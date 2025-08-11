@@ -73,29 +73,63 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildUserProfile() {
-    return Center(
+    return SingleChildScrollView(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: NetworkImage(_currentUser.avatarUrl),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            _currentUser.name,
-            style: GoogleFonts.leagueSpartan(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(_currentUser.avatarUrl),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  _currentUser.name,
+                  style: GoogleFonts.leagueSpartan(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  _currentUser.email,
+                  style: GoogleFonts.leagueSpartan(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 32),
+                ElevatedButton(
+                  onPressed: _signOut,
+                  child: const Text('Sign Out'),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            _currentUser.email,
-            style: GoogleFonts.leagueSpartan(fontSize: 16, color: Colors.grey),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.event),
+            title: const Text('My Events'),
+            onTap: () {
+              // TODO: Implement navigation to MyEventsPage
+            },
           ),
-          const SizedBox(height: 32),
-          ElevatedButton(onPressed: _signOut, child: const Text('Sign Out')),
+          ListTile(
+            leading: const Icon(Icons.restaurant_menu),
+            title: const Text('My Restaurants'),
+            onTap: () {
+              // TODO: Implement navigation to a page showing saved restaurants
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: const Text('Settings'),
+            onTap: () {
+              // TODO: Implement navigation to settings page
+            },
+          ),
         ],
       ),
     );
